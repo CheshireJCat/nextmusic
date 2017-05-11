@@ -57,7 +57,7 @@
     <script type="text/javascript">
     var url = 'http://qiniuuwmp3.changba.com/';
     var type = '.mp3'
-    var min = 680000001;
+    var min = 680000002;
     var range = 200000000;
     var audio = document.getElementById('audio');
     var now = document.getElementById('now');
@@ -70,11 +70,17 @@
     function next() {
         clearTimeout(timerNext);
         var src = parseInt(Math.random() * range) + min;
+        if(isNaN(src)){
+            next();
+            return false;
+        }
         src = url + src + type;
         audio.src = src;
         now.innerHTML = src;
     }
-    document.getElementById('change').onclick = next;
+    document.getElementById('change').onclick = function(){
+        next();
+    };
     audio.onerror = function() {
         setStatus('出错了');
         clearTimeout(timerNext);
