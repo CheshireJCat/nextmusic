@@ -16,8 +16,10 @@
 </head>
 <body>
 	<audio id="audio" src="http://qiniuuwmp3.changba.com/885402155.mp3" controls autoplay></audio>
-	<div><span id="status" style="margin-right: 20px"></span>当前链接：</div>
+	<div><span id="status" class="mt10" style="margin-right: 20px"></span>当前链接：</div>
 	<div id="now" class="mt10">http://qiniuuwmp3.changba.com/885402155.mp3</div>
+	<!-- <button id="down" class="mt10 button">下载</button> -->
+	<button id="play" class="mt10 button">播放</button>
 	<button id="change" class="mt10 button">切换</button>
 	<div class="from">资源来源于《唱吧》<a href="//changba.com" target="_blank"></div>
 	<script type="text/javascript">
@@ -48,6 +50,12 @@
 				setStatus('');
 			})
 		}
+		document.getElementById('play').onclick = function(){
+			audio.play();
+		};
+		document.getElementById('down').onclick = function(){
+			window.open(now.innerHTML);
+		};
 	</script>
 </body>
 </html>
