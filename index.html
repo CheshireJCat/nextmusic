@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>唱吧随机电台</title>
+	<style type="text/css">
+		html,body{height:100%;box-sizing: border-box;overflow:hidden;}
+		div{box-sizing: border-box;}
+		body{text-align: center;font-size:16px;}
+		.mt10{margin-top: 20px;}
+		.button{width: 100%;text-align: center;line-height:50px;font-size: 18px;}
+		audio{margin-top:30%;}
+		.from{position:absolute;bottom:0;width:100%;font-size:12px;color:#ddd;}
+	</style>
+</head>
+<body>
+	<audio id="audio" src="http://qiniuuwmp3.changba.com/885402155.mp3" controls autoplay></audio>
+	<div><span id="status" style="margin-right: 20px"></span>当前链接：</div>
+	<div id="now" class="mt10">http://qiniuuwmp3.changba.com/885402155.mp3</div>
+	<button id="change" class="mt10 button">切换</button>
+	<div class="from">资源来源于《唱吧》<a href="//changba.com" target="_blank"></div>
+	<script type="text/javascript">
+		var url = 'http://qiniuuwmp3.changba.com/';
+		var type = '.mp3'
+		var min = 680000001;
+		var range = 200000000;
+		var audio = document.getElementById('audio');
+		var now = document.getElementById('now');
+		function setStatus(t){
+			document.getElementById('status').innerHTML = t;
+		}
+		document.getElementById('change').onclick = function(){
+			var src = parseInt(Math.random()*range) + min;
+			src = url + src + type;
+			audio.src = src;
+			now.innerHTML = src;
+		};
+		audio.onerror = function(){
+			setStatus('出错了');
+		}
+		audio.onloadstart = function(){
+			setStatus('开始加载');
+		}
+		audio.oncanplay = function(){
+			setStatus('可以播放了');
+			setTimeout(function(){
+				setStatus('');
+			})
+		}
+	</script>
+</body>
+</html>
