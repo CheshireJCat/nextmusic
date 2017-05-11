@@ -1,75 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-	<title>唱吧随机电台</title>
-	<style type="text/css">
-		html,body{height:100%;box-sizing: border-box;overflow:hidden;}
-		div{box-sizing: border-box;}
-		body{text-align: center;font-size:16px;}
-		.mt10{margin-top: 20px;}
-		.button{width: 100%;text-align: center;line-height:50px;height:50px;font-size: 18px;}
-		.from{position:absolute;bottom:0;width:100%;font-size:12px;color:#ddd;}
-	</style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=yes">
+    <title>唱吧随机电台</title>
+    <style type="text/css">
+    html,
+    body {
+        height: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    div {
+        box-sizing: border-box;
+    }
+    
+    body {
+        text-align: center;
+        font-size: 16px;
+    }
+    
+    .mt10 {
+        margin-top: 20px;
+    }
+    
+    .button {
+        width: 100%;
+        text-align: center;
+        line-height: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+    
+    .from {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        font-size: 12px;
+        color: #ddd;
+    }
+    </style>
 </head>
+
 <body>
-	<audio id="audio" src="http://qiniuuwmp3.changba.com/885402155.mp3" style="width:100%" controls autoplay></audio>
-	<div><span id="status" class="mt10" style="margin-right: 20px"></span>当前链接：</div>
-	<div id="now" class="mt10">http://qiniuuwmp3.changba.com/885402155.mp3</div>
-	<!-- <button id="down" class="mt10 button">下载</button> -->
-	<button id="play" class="mt10 button">播放</button>
-	<button id="change" class="mt10 button">切换</button>
-	<div class="from">资源来源于《唱吧》<a href="//changba.com" target="_blank"></div>
-	<script type="text/javascript">
-		var url = 'http://qiniuuwmp3.changba.com/';
-		var type = '.mp3'
-		var min = 680000001;
-		var range = 200000000;
-		var audio = document.getElementById('audio');
-		var now = document.getElementById('now');
-		var timerNext = null;
-		function setStatus(t){
-			document.getElementById('status').innerHTML = t;
-		}
-		function next(){
-			clearTimeout(timerNext);
-			var src = parseInt(Math.random()*range) + min;
-			src = url + src + type;
-			audio.src = src;
-			now.innerHTML = src;
-		}
-		document.getElementById('change').onclick = next;
-		audio.onerror = function(){
-			setStatus('出错了');
-			clearTimeout(timerNext);
-			timerNext = setTimeout(function(){
-				next();
-			},2000)
-		}
-		audio.onloadstart = function(){
-			setStatus('开始加载');
-		}
-		audio.oncanplay = function(){
-			setStatus('可以播放了');
-			setTimeout(function(){
-				setStatus('');
-			},1000);
-		}
-		audio.onended = function(){
-			setStatus('3秒后自动切换下一首');
-			clearTimeout(timerNext);
-			timerNext = setTimeout(function(){
-				next();
-			},1000);
-		}
-		document.getElementById('play').onclick = function(){
-			audio.play();
-		};
-		document.getElementById('down').onclick = function(){
-			window.open(now.innerHTML);
-		};
-	</script>
+    <audio id="audio" src="http://qiniuuwmp3.changba.com/885402155.mp3" style="width:100%" controls autoplay></audio>
+    <div><span id="status" class="mt10" style="margin-right: 20px"></span>当前链接：</div>
+    <div id="now" class="mt10">http://qiniuuwmp3.changba.com/885402155.mp3</div>
+    <!-- <button id="down" class="mt10 button">下载</button> -->
+    <button id="play" class="mt10 button">播放</button>
+    <button id="change" class="mt10 button">切换</button>
+    <div class="from">资源来源于《唱吧》
+        <a href="//changba.com" target="_blank"></div>
+    <script type="text/javascript">
+    var url = 'http://qiniuuwmp3.changba.com/';
+    var type = '.mp3'
+    var min = 680000001;
+    var range = 200000000;
+    var audio = document.getElementById('audio');
+    var now = document.getElementById('now');
+    var timerNext = null;
+
+    function setStatus(t) {
+        document.getElementById('status').innerHTML = t;
+    }
+
+    function next() {
+        clearTimeout(timerNext);
+        var src = parseInt(Math.random() * range) + min;
+        src = url + src + type;
+        audio.src = src;
+        now.innerHTML = src;
+    }
+    document.getElementById('change').onclick = next;
+    audio.onerror = function() {
+        setStatus('出错了');
+        clearTimeout(timerNext);
+        timerNext = setTimeout(function() {
+            next();
+        }, 2000)
+    }
+    audio.onloadstart = function() {
+        setStatus('开始加载');
+    }
+    audio.oncanplay = function() {
+        setStatus('可以播放了');
+        setTimeout(function() {
+            setStatus('');
+        }, 1000);
+    }
+    audio.onended = function() {
+        setStatus('3秒后自动切换下一首');
+        clearTimeout(timerNext);
+        timerNext = setTimeout(function() {
+            next();
+        }, 1000);
+    }
+    document.getElementById('play').onclick = function() {
+        audio.play();
+    };
+    if (document.getElementById('down')) {
+        document.getElementById('down').onclick = function() {
+            window.open(now.innerHTML);
+        };
+    }
+    now.onclick = function() {
+        var userSelection;
+        if (window.getSelection) {
+            selection = window.getSelection();
+            range = document.createRange();
+            range.selectNodeContents(this);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    };
+    </script>
 </body>
+
 </html>
