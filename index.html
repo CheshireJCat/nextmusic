@@ -52,76 +52,79 @@
     <!-- <button id="down" class="mt10 button">下载</button> -->
     <button id="play" class="mt10 button">播放</button>
     <button id="change" class="mt10 button">切换</button>
-    <div class="from">资源来源于《唱吧》
-        <a href="//changba.com" target="_blank"></div>
+    <div class="from">资源来源于<a href="//changba.com" target="_blank">《唱吧》</a></div>
     <script type="text/javascript">
-    var url = 'http://qiniuuwmp3.changba.com/';
-    var type = '.mp3'
-    var min = 680000002;
-    var range = 200000000;
-    var audio = document.getElementById('audio');
-    var now = document.getElementById('now');
-    var timerNext = null;
+    (function() {
+        var url = 'http://qiniuuwmp3.changba.com/';
+        var type = '.mp3'
+        var min = 680000002;
+        var num = 200000000;
+        var audio = document.getElementById('audio');
+        var now = document.getElementById('now');
+        var timerNext = null;
+        var his = [];
 
-    function setStatus(t) {
-        document.getElementById('status').innerHTML = t;
-    }
-
-    function next() {
-        clearTimeout(timerNext);
-        var src = parseInt(Math.random() * range) + min;
-        if(isNaN(src)){
-            next();
-            return false;
+        function setStatus(t) {
+            document.getElementById('status').innerHTML = t;
         }
-        src = url + src + type;
-        audio.src = src;
-        now.innerHTML = src;
-    }
-    document.getElementById('change').onclick = function(){
-        next();
-    };
-    audio.onerror = function() {
-        setStatus('出错了');
-        clearTimeout(timerNext);
-        timerNext = setTimeout(function() {
+
+        function next() {
+            clearTimeout(timerNext);
+            var src = parseInt(Math.random() * num) + min;
+            if (isNaN(src) || his.indexOf(src) > -1) {
+                next();
+                return false;
+            }
+            his.push(src);
+            src = url + src + type;
+            audio.src = src;
+            now.innerHTML = src;
+        }
+        document.getElementById('change').onclick = function() {
             next();
-        }, 2000)
-    }
-    audio.onloadstart = function() {
-        setStatus('开始加载');
-    }
-    audio.oncanplay = function() {
-        setStatus('可以播放了');
-        setTimeout(function() {
-            setStatus('');
-        }, 1000);
-    }
-    audio.onended = function() {
-        setStatus('3秒后自动切换下一首');
-        clearTimeout(timerNext);
-        timerNext = setTimeout(function() {
-            next();
-        }, 1000);
-    }
-    document.getElementById('play').onclick = function() {
-        audio.play();
-    };
-    if (document.getElementById('down')) {
-        document.getElementById('down').onclick = function() {
-            window.open(now.innerHTML);
         };
-    }
-    now.onclick = function() {
-        var userSelection;
-        if (window.getSelection) {
-            selection = window.getSelection();
-            range = document.createRange();
-            range.selectNodeContents(this);
-            selection.removeAllRanges();
-            selection.addRange(range);
+        audio.onerror = function() {
+            setStatus('出错了');
+            clearTimeout(timerNext);
+            timerNext = setTimeout(function() {
+                next();
+            }, 2000)
         }
-    };
+        audio.onloadstart = function() {
+            setStatus('开始加载');
+        }
+        audio.oncanplay = function() {
+            setStatus('可以播放了');
+            setTimeout(function() {
+                setStatus('');
+            }, 1000);
+        }
+        audio.onended = function() {
+            setStatus('3秒后自动切换下一首');
+            clearTimeout(timerNext);
+            timerNext = setTimeout(function() {
+                next();
+            }, 1000);
+        }
+        document.getElementById('play').onclick = function() {
+            audio.play();
+        };
+        if (document.getElementById('down')) {
+            document.getElementById('down').onclick = function() {
+                window.open(now.innerHTML);
+            };
+        }
+        now.onclick = function() {
+            var userSelection;
+            if (window.getSelection) {
+                selection = window.getSelection();
+                range = document.createRange();
+                range.selectNodeContents(this);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        };
+    })();
     </script>
 </body>
 
